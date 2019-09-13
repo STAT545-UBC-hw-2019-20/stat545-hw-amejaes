@@ -1,6 +1,6 @@
 # Participation Repository for STAT545A
 
-This **repository** includes my assignment files for STAT545A. **Each folder** within my repository represents one assignment within our course.
+This **repository** includes my assignment files for STAT545A, a course at UBC. **Each folder** within my repository represents one assignment within our course.
 
 ## Who am I?
 
