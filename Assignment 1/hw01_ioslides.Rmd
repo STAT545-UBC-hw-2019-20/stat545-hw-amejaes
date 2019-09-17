@@ -1,0 +1,39 @@
+---
+title: "Assignment 1: Gapminder"
+author: Annie
+output: ioslides_presentation
+---
+
+```{r setup, echo=FALSE}
+library(gapminder)
+library(tibble)
+library (DT)
+```
+
+## Min Population
+```{r}
+names(gapminder)
+population <- gapminder$pop
+min(population)
+```
+
+## Max Population
+```{r}
+max(population)
+```
+
+## Range GDP per capita
+```{r}
+names(gapminder)
+GDP <- gapminder$gdpPercap
+range(GDP)
+```
+
+## To learn more, you can explore the table yourself here:
+```{r, echo=FALSE}
+datatable(as_tibble(gapminder))
+```
+
+
+
+
