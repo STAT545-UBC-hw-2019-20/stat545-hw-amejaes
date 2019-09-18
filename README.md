@@ -1,6 +1,6 @@
 # Participation Repository for STAT545A
 
-This **repository** includes my assignment files for STAT545A, a course at UBC. **Each folder** within my repository represents one assignment within our course. The first assignment is [here](https://github.com/STAT545-UBC-hw-2019-20/stat545-hw-amejaes/tree/master/Assignment%201)
+This **repository** includes my assignment files for STAT545A, a course at UBC. **Each folder** within my repository represents one assignment within our course. The first assignment is available [here](https://github.com/STAT545-UBC-hw-2019-20/stat545-hw-amejaes/tree/master/Assignment%201).
 
 ## Who am I?
 
