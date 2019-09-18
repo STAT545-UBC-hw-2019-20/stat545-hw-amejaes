@@ -1,11 +1,7 @@
 ---
 title: "Assignment 1: Gapminder"
-author: Annie
-output: 
-  html_document:
-    toc: true
-    number_sections: true
-    theme: cerulean
+output: github_document
+always_allow_html: yes
 ---
 
 ```{r setup, echo=FALSE}
@@ -17,7 +13,7 @@ library (DT)
 ## Gapminder
 We are going to explore Gapminder, a dataset.
 What information is present in the dataset? Below are Gapminder's column headings:
-```{r, echo=FALSE}
+```{r gapminder}
 columns <- names(gapminder)
 columns
 ```
@@ -26,7 +22,7 @@ columns
 Which country in the world has the smallest population size?
 ```{r, echo=FALSE}
 min_pop <- subset(gapminder, pop==min(pop), select = country:pop)
-datatable(as_tibble(min_pop))
+min_pop
 ```
 
 ## Smallest population Part 2
@@ -36,9 +32,8 @@ Does the same country currently have the smallest population size in the world?
 ```{r, echo=FALSE}
 recent <- subset(gapminder, year=='2007')
 min_pop_recent <- subset(recent, pop==min(pop), select = country:pop)
-datatable(as_tibble(min_pop_recent))
+min_pop_recent
 ```
-
 
 ## Population range
 Globally, what is the range in population sizes (circa 2007)?
@@ -47,13 +42,3 @@ recent <- subset(gapminder, year=='2007')
 range_pop <- (range(recent$pop))
 range_pop
 ```
-
-## Learn more
-To learn more, you can explore the dataset yourself here:
-```{r, echo=FALSE}
-datatable(as_tibble(gapminder))
-```
-
-
-
-
