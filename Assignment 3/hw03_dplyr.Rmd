@@ -1,0 +1,76 @@
+---
+title: "Homework 03: DPLYR and GGPLOT2"
+author: "Annie"
+date: "29/09/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE, message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(gapminder)
+```
+
+Task 2. Below I calculated the minimum and maximum GDP per capita for all continents in 2007. I have also included the country that is associated with the minimum/maximum GDP per capita on each continent.
+
+```{r}
+gdpmin_max <- gapminder %>%
+  group_by(continent) %>%
+  filter(year == 2007) %>%
+  summarise(min_gdp = min(gdpPercap), 
+            min_country = country[gdpPercap == min_gdp],
+            max_gdp = max(gdpPercap), 
+            max_country = country[gdpPercap == max_gdp])
+gdpmin_max
+```
+
+The scatterplot below represents the same data as the above table. Africa is home to the country with the lowest GDP per capita, and Europe is home to the country with the highest GDP per capita. 
+
+```{r}
+gdpmin_max %>% 
+  ggplot(aes())+
+    geom_point(aes(continent, min_gdp, color = "Min GDP")) +
+    geom_point(aes(continent, max_gdp, color = "Max GDP")) +
+  labs(x = "Continent", y = "GDP per Capita") +
+  scale_y_log10(labels = scales::dollar_format()) +
+  scale_color_discrete("Legend")
+```
+
+Task 3. Below is the spread of GDP per capita within continents. Summary statistics include the minimum, maximum, mean, and median GDP per capita for each continent.
+
+```{r}
+gapminder %>%
+  group_by(continent) %>%
+  summarize(min_gdp = min(gdpPercap), max_gdp = max(gdpPercap), mean_gdp = mean(gdpPercap), median_gdp = median(gdpPercap), std_gdp = sd(gdpPercap))
+```
+
+Below is a boxplot of GDP per capita for every continent. Asia has the largest spread of GDP per capita, while Oceania has the smallest spread. 
+```{r}
+gapminder %>%
+  ggplot(aes(continent, gdpPercap, fill = continent)) +
+  geom_boxplot() + 
+  labs(x = "Continent", y = "GDP per Capita") +
+  scale_y_log10(labels = scales::dollar_format()) +
+  scale_color_discrete("Legend")
+```
+
+Task 5. Below is the life expectancy as it changes over time on different continents. I calculated the mean life expectancy across countries within each continent.
+
+```{r}
+life_change <- gapminder %>% 
+  group_by(continent, year) %>%
+  arrange(continent, year) %>%
+  summarize(mean_life = mean(lifeExp))
+life_change
+```
+
+```{r}
+life_change %>%
+  ggplot(aes(year, mean_life, group = continent, color = continent)) +
+  geom_point() +
+  geom_line() +
+  labs(x = "Year", y = "Mean Life Expectancy") +
+  scale_color_discrete("Legend")
+```
+
