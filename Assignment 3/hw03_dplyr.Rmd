@@ -1,18 +1,21 @@
 ---
-title: "Homework 03: DPLYR and GGPLOT2"
+title: "Homework 03: Dplyr and Ggplot2"
 author: "Annie"
 date: "29/09/2019"
 output: html_document
 ---
 
+This assignment explores the dataset gapminder using dplyr and ggplot2. 
 ```{r setup, include=FALSE, message = FALSE, warning = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
-library(tidyverse)
 library(gapminder)
+library(tidyverse)
+library(ggplot2)
 ```
 
-Task 2. Below I calculated the minimum and maximum GDP per capita for all continents in 2007. I have also included the country that is associated with the minimum/maximum GDP per capita on each continent.
+**Task 2.**
+Below I calculated the minimum and maximum GDP per capita for all continents in 2007. I have also included the country that is associated with the minimum/maximum GDP per capita on each continent.
 
 ```{r}
 gdpmin_max <- gapminder %>%
@@ -37,7 +40,8 @@ gdpmin_max %>%
   scale_color_discrete("Legend")
 ```
 
-Task 3. Below is the spread of GDP per capita within continents. Summary statistics include the minimum, maximum, mean, and median GDP per capita for each continent.
+**Task 3.** 
+Below is the spread of GDP per capita within continents. Summary statistics include the minimum, maximum, mean, and median GDP per capita for each continent.
 
 ```{r}
 gapminder %>%
@@ -51,11 +55,11 @@ gapminder %>%
   ggplot(aes(continent, gdpPercap, fill = continent)) +
   geom_boxplot() + 
   labs(x = "Continent", y = "GDP per Capita") +
-  scale_y_log10(labels = scales::dollar_format()) +
-  scale_color_discrete("Legend")
+  scale_y_log10(labels = scales::dollar_format())
 ```
 
-Task 5. Below is the life expectancy as it changes over time on different continents. I calculated the mean life expectancy across countries within each continent.
+**Task 5.** 
+Below is the life expectancy as it changes over time on different continents. I calculated the mean life expectancy across countries within each continent.
 
 ```{r}
 life_change <- gapminder %>% 
@@ -65,6 +69,7 @@ life_change <- gapminder %>%
 life_change
 ```
 
+Mean life expectancies across all continents have increased over time. 
 ```{r}
 life_change %>%
   ggplot(aes(year, mean_life, group = continent, color = continent)) +
