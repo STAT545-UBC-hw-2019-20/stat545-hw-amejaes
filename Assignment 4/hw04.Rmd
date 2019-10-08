@@ -1,0 +1,9 @@
+---
+title: "Homework 04"
+author: "Annie"
+date: "08/10/2019"
+output: 
+  html_document:
+    keep_md: true
+    theme: paper
+---
