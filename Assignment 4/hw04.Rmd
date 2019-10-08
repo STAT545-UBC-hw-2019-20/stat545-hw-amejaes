@@ -2,8 +2,89 @@
 title: "Homework 04"
 author: "Annie"
 date: "08/10/2019"
-output: 
-  html_document:
-    keep_md: true
-    theme: paper
+output: github_document
 ---
+
+This assignment explores tidy data using the dataset gapminder.
+```{r setup, include=FALSE, message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(gapminder)
+library(tidyverse)
+library(ggplot2)
+guest <- read_csv("https://raw.githubusercontent.com/STAT545-UBC/Classroom/master/data/wedding/attend.csv")
+email <- read_csv("https://raw.githubusercontent.com/STAT545-UBC/Classroom/master/data/wedding/emails.csv")
+```
+
+##Univariate Option 1
+Below I have made a tibble with one row per year, and columns for life expectancy for the Germany and China.
+```{r}
+gapminder_JaCh <- gapminder %>%
+  filter(country == 'Japan' | country == 'China')
+gapminder_JaCh
+
+JaCh_wide <- gapminder_GeCh %>%
+  pivot_wider(id_cols = year, 
+              names_from = country, 
+              values_from = lifeExp)
+JaCh_wide
+```
+
+Below is a scatterplot of the life expectancy of Russia vs. China.
+
+```{r}
+JaCh_wide %>%
+  ggplot(aes(year))+
+    geom_point(aes(y = Japan))+
+    geom_point(aes(y = China)) +
+    labs(x = "Year", y = "Life Expectancy") +
+    scale_color_discrete("Legend")
+```
+
+
+Now, I will relengthen the dataset. 
+
+```{r}
+JaCh_long <- JaCh_wide %>%
+  pivot_longer(cols = -year,
+               names_to = "Country",
+               values_to = "Life Expectancy")
+#For cols, I could also insert Japan:China
+JaCh_long
+```
+
+##Multivariate Option 2
+
+Below I will compute the mean life expectancy and GDP per capita for all possible combinations of continent and year.
+
+```{r}
+meanlife_gdp <- gapminder %>%
+  group_by(continent, year) %>%
+  summarize(meanlife = mean(lifeExp), meangdp = mean(gdpPercap))
+
+meanlifegdp_wide <- meanlife_gdp %>%
+  pivot_wider(id_cols = c(year),
+              names_from = continent,
+              names_sep = "_",
+              values_from = c(meanlife, meangdp))
+meanlifegdp_wide
+```
+
+Next, I will lengthen the data.
+
+```{r}
+meanlifegdp_long <- meanlifegdp_wide %>%
+  pivot_longer(cols = contains("mean"), 
+               names_to = c("continent", ".value"),
+               names_sep = "_")
+meanlifegdp_long
+```
+
+##Table Joins
+
+For this exercise, I am going to add the appropriate email address for every guest. 
+
+```{r}
+
+```
+
