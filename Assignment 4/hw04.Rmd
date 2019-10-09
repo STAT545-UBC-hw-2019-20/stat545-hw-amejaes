@@ -23,7 +23,7 @@ gapminder_JaCh <- gapminder %>%
   filter(country == 'Japan' | country == 'China')
 gapminder_JaCh
 
-JaCh_wide <- gapminder_GeCh %>%
+JaCh_wide <- gapminder_JaCh %>%
   pivot_wider(id_cols = year, 
               names_from = country, 
               values_from = lifeExp)
@@ -34,11 +34,12 @@ Below is a scatterplot of the life expectancy of Russia vs. China.
 
 ```{r}
 JaCh_wide %>%
-  ggplot(aes(year))+
-    geom_point(aes(y = Japan))+
-    geom_point(aes(y = China)) +
+  ggplot(aes(Japan, China, color = year)) +
+  geom_point()+
+    #geom_point(aes(y = Japan, color = "blue"))+
+    #geom_point(aes(y = China)) +
     labs(x = "Year", y = "Life Expectancy") +
-    scale_color_discrete("Legend")
+    scale_color_continuous("Legend")
 ```
 
 
@@ -75,16 +76,51 @@ Next, I will lengthen the data.
 ```{r}
 meanlifegdp_long <- meanlifegdp_wide %>%
   pivot_longer(cols = contains("mean"), 
-               names_to = c("continent", ".value"),
+               names_to = c(".value", "continent"),
                names_sep = "_")
 meanlifegdp_long
 ```
 
 ##Table Joins
 
-For this exercise, I am going to add the appropriate email address for every guest. 
+For this exercise, I am going to add the appropriate email address for every guest. There are certain guests that do not have an email.
 
 ```{r}
+email_new <- separate_rows(email, guest, sep=", ") %>%
+  rename(name = guest)
 
+guest_email <- guest %>% 
+  left_join(email_new, by = "name")
+guest_email
+#If I only wanted to return guests with emails, I would use an inner join instead of a left join.
+```
+
+```{r}
+colnames(email) <- c("name", "email")
+email_modified <- email %>%
+  separate_rows(name, sep = ", ")
+
+email_modified %>%
+  left_join(guest, by="name")
+
+email_modified
+```
+
+Below is a list of the people that we have emails for, yet are not on the guest list.
+
+```{r}
+email_notguest <- email_new %>%
+  anti_join(guest_email, by = "name")
+email_notguest
+email_new
+```
+
+This list includes everyone that we have emails for, and everyone on the original guest list.
+
+```{r}
+email_notguest %>%
+  bind_rows(guest_email) %>%
+  select(name, email)
+  
 ```
 
