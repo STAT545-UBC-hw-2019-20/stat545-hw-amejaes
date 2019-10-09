@@ -16,8 +16,8 @@ guest <- read_csv("https://raw.githubusercontent.com/STAT545-UBC/Classroom/maste
 email <- read_csv("https://raw.githubusercontent.com/STAT545-UBC/Classroom/master/data/wedding/emails.csv")
 ```
 
-##Univariate Option 1
-Below I have made a tibble with one row per year, and columns for life expectancy for the Japan, China, and Thailand.
+**Univariate Option 1**
+Below I have made a tibble with one row per year, and columns for the life expectancy of Japan, China, and Thailand.
 ```{r}
 gapminder_JaChTh <- gapminder %>%
   filter(country == 'Japan' | country == 'China' | country == 'Thailand')
@@ -51,7 +51,7 @@ JaChTh_long <- JaChTh_wide %>%
 JaChTh_long
 ```
 
-##Multivariate Option 2
+**Multivariate Option 2**
 
 Below I will compute the mean life expectancy and GDP per capita for all possible combinations of continent and year.
 
@@ -78,7 +78,7 @@ meanlifegdp_long <- meanlifegdp_wide %>%
 meanlifegdp_long
 ```
 
-##Table Joins
+**Table Joins**
 
 For this exercise, I am going to add the appropriate email address for every guest. There are certain guests that do not have an email.
 
