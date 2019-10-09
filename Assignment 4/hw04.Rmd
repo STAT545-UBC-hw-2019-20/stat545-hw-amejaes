@@ -17,41 +17,38 @@ email <- read_csv("https://raw.githubusercontent.com/STAT545-UBC/Classroom/maste
 ```
 
 ##Univariate Option 1
-Below I have made a tibble with one row per year, and columns for life expectancy for the Germany and China.
+Below I have made a tibble with one row per year, and columns for life expectancy for the Japan, China, and Thailand.
 ```{r}
-gapminder_JaCh <- gapminder %>%
-  filter(country == 'Japan' | country == 'China')
-gapminder_JaCh
+gapminder_JaChTh <- gapminder %>%
+  filter(country == 'Japan' | country == 'China' | country == 'Thailand')
 
-JaCh_wide <- gapminder_JaCh %>%
+JaChTh_wide <- gapminder_JaChTh %>%
   pivot_wider(id_cols = year, 
               names_from = country, 
               values_from = lifeExp)
-JaCh_wide
+JaChTh_wide
 ```
 
-Below is a scatterplot of the life expectancy of Russia vs. China.
+Below is a scatterplot of the life expectancy of Japan vs. China.
 
 ```{r}
-JaCh_wide %>%
+JaChTh_wide %>%
   ggplot(aes(Japan, China, color = year)) +
   geom_point()+
-    #geom_point(aes(y = Japan, color = "blue"))+
-    #geom_point(aes(y = China)) +
-    labs(x = "Year", y = "Life Expectancy") +
-    scale_color_continuous("Legend")
+    labs(x = "Life Expectancy of Japan", y = "Life Expectancy of China", title = "Comparing the Life Expectancy of Japan and China over Time") +
+    scale_color_continuous("Year")
 ```
 
 
 Now, I will relengthen the dataset. 
 
 ```{r}
-JaCh_long <- JaCh_wide %>%
+JaChTh_long <- JaChTh_wide %>%
   pivot_longer(cols = -year,
                names_to = "Country",
                values_to = "Life Expectancy")
-#For cols, I could also insert Japan:China
-JaCh_long
+#For cols, I could also insert Japan:Thailand
+JaChTh_long
 ```
 
 ##Multivariate Option 2
@@ -95,24 +92,12 @@ guest_email
 #If I only wanted to return guests with emails, I would use an inner join instead of a left join.
 ```
 
-```{r}
-colnames(email) <- c("name", "email")
-email_modified <- email %>%
-  separate_rows(name, sep = ", ")
-
-email_modified %>%
-  left_join(guest, by="name")
-
-email_modified
-```
-
 Below is a list of the people that we have emails for, yet are not on the guest list.
 
 ```{r}
 email_notguest <- email_new %>%
   anti_join(guest_email, by = "name")
 email_notguest
-email_new
 ```
 
 This list includes everyone that we have emails for, and everyone on the original guest list.
@@ -121,6 +106,5 @@ This list includes everyone that we have emails for, and everyone on the origina
 email_notguest %>%
   bind_rows(guest_email) %>%
   select(name, email)
-  
 ```
 
