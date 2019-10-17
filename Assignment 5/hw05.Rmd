@@ -11,25 +11,53 @@ knitr::opts_chunk$set(echo = TRUE)
 library(gapminder)
 library(tidyverse)
 library(ggplot2)
-
+library(here)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r}
+gapminder$continent %>%
+  str()
 ```
 
-## Including Plots
+```{r}
+oceania_dropped <- gapminder %>% 
+  filter(continent != 'Oceania') %>%
+  droplevels()
 
-You can also embed plots, for example:
+oceania_dropped
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+nlevels()
+nrows()
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+gap_max_gdp <- gapminder %>%
+  group_by(continent) %>%
+  summarize(max(gdpPercap)) %>%
+  rename (max_gdp = 'max(gdpPercap)')
+gap_max_gdp
+
+gap_max_gdp %>%
+  ggplot() +
+  geom_col(aes(forcats::fct_relevel(continent, "Asia", "Europe", "Americas", "Oceania"), max_gdp)) +
+  theme_bw() +
+  ylab("Maximum GDP per Capita") + xlab("Continent")
+
+#how to get fct_infreq to work?
+```
+
+```{r}
+gap_africa_2000 <- gapminder %>%
+  filter(continent == "Africa", year > 1999)
+write_csv(gap_africa_2000, here::here("Assignment 5", "gap_africa_2000.csv"))
+```
+
+
+```{r}
+read_csv(here("Assignment 5", "gap_africa_2000.csv"))
+```
+
+
+```{r}
+```
+
